@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { RegisterScreen } from "./src/components/screens/RegisterScreen";
+import Navigation from "./src/flow/Navigation";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -14,12 +15,7 @@ export default function App() {
     <View style={styles.container}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <Navigation />
         </PersistGate>
       </Provider>
     </View>
