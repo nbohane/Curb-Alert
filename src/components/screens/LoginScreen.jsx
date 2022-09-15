@@ -5,13 +5,15 @@ import { CpLink } from "../common/CpLink";
 import { useState } from "react";
 import { CpPasswordInput } from "../common/CpPasswordInput";
 import { CpButton } from "../common/CpButton";
+import { CpSpacer } from "../common/CpSpacer";
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
+      <CpSpacer />
       <View style={styles.inputContainer}>
         <CpTextInput
           placeholder={"E-mail"}
@@ -27,18 +29,20 @@ export const LoginScreen = () => {
           <CpLink
             text={"here"}
             onPress={() => {
-              console.log("register pressed");
+              navigation.navigate("Register");
             }}
           />
         </View>
       </View>
+      <CpSpacer />
+      <CpSpacer />
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: colors.primary,
-    paddingVertical: "75%",
   },
   inputContainer: {
     padding: appStyles.edgeMargin,

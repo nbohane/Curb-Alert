@@ -1,0 +1,60 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Users/jamesbaffoni/Library/Android/sdk/tools:/Users/jamesbaffoni/Library/Android/sdk/tools/bin:/Users/jamesbaffoni/Library/Android/sdk/platform-tools:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/jamesbaffoni/Documents/Development/Jay/Curb-Alert/node_modules/.bin
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.17.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  SyntaxError: /Users/jamesbaffoni/Documents/Development/Jay/Curb-Alert/package.json: Unexpected string in JSON at position 642
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "curb-alert",
+    "version": "1.0.0",
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web"
+    },
+    "dependencies": {
+      "@react-native-async-storage/async-storage": "^1.17.10",
+      "@reduxjs/toolkit": "^1.8.5",
+      "@react-navigation/native": "^6.0.12",
+      "@react-navigation/native-stack": "^6.8.0",
+      "expo": "~46.0.9",
+      "expo-status-bar": "~1.4.0",
+      "prettier": "^2.7.1",
+      "react": "18.0.0",
+      "react-native": "0.69.5",
+      "react-redux": "^8.0.2",
+      "redux-persist": "^6.0.0"
+      "react-native-safe-area-context": "4.3.1",
+      "react-native-screens": "~3.15.0"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.12.9"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  
