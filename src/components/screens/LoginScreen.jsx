@@ -6,10 +6,37 @@ import { useState } from "react";
 import { CpPasswordInput } from "../common/CpPasswordInput";
 import { CpButton } from "../common/CpButton";
 import { CpSpacer } from "../common/CpSpacer";
+import {useDispatch, useSelector} from "react-redux";
+import {logIn, selectUser} from "../../redux/authSlice";
+import {setAlert, setLoading} from "../../redux/utilitySlice";
 
 export const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const user = useSelector((state) => selectUser(state));
+
+  const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const attemptLogin = () => {
+    if (email === "" || password === "") {
+      dispatch(
+          setAlert({ level: "error", message: "All fields are required" })
+      );
+      return;
+    }
+    dispatch(setLoading(true));
+    login(email, password)
+        .then((response) => dispatch(logIn(response.data)))
+        .catch((error) => {
+          dispatch(
+              setAlert({ level: "error", message: error.response.data.message })
+          );
+          console.log(error.response.data.message);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +48,7 @@ export const LoginScreen = ({ navigation }) => {
           value={email}
         />
         <CpPasswordInput onChangeText={(text) => setPassword(text)} />
-        <CpButton text={"Login"} backgroundColor={colors.secondary} />
+        <CpButton text={"Login"} onPress={attemptLogin} backgroundColor={colors.secondary} />
         <View style={styles.register}>
           <Text style={{ color: colors.light }}>
             Don't have an account? Register{" "}

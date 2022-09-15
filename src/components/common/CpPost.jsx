@@ -21,6 +21,7 @@ export const CpPost = ({ post, onEdit, onDelete }) => {
           </Text>
         </View>
       </View>
+      <View style={{flexDirection: 'column'}}>
       <Text
         style={{
           paddingVertical: 4,
@@ -28,9 +29,18 @@ export const CpPost = ({ post, onEdit, onDelete }) => {
           color: colors.dark,
         }}
       >
-        {post.message}
+        {post.title}
       </Text>
-      {post.author === user.id && (
+      <Text
+          style={{
+            paddingVertical: 4,
+            fontSize: appStyles.primaryTextSize,
+            color: colors.dark,
+          }}
+      >
+        {post.description}
+      </Text></View>
+      {post.name === user.id && (
         <View style={{ flexDirection: "row" }}>
           <CpLink color={colors.primary} text={"Edit"} onPress={onEdit} />
           <View style={{ width: 16 }} />

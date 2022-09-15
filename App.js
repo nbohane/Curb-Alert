@@ -7,17 +7,19 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { RegisterScreen } from "./src/components/screens/RegisterScreen";
 import Navigation from "./src/flow/Navigation";
+import {HomeScreen} from "./src/components/screens/HomeScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
     <View style={styles.container}>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <Navigation />
-        </PersistGate>
-      </Provider>
+      {/*<Provider store={store}>*/}
+      {/*  <PersistGate persistor={persistor}>*/}
+      {/*    <Navigation />*/}
+      {/*  </PersistGate>*/}
+      {/*</Provider>*/}
+      <HomeScreen/>
     </View>
   );
 }
