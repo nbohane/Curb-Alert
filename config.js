@@ -20,5 +20,4 @@ export const appStyles = {
   elementSpacing: 8,
   largeText: 16,
 };
-export const apiUrl =
-  "http://ihmnewsapi-env.eba-2uinbzsy.us-east-1.elasticbeanstalk.com";
+export const apiUrl = "http://10.0.0.60:3000";
