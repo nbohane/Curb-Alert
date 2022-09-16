@@ -1,7 +1,7 @@
 import React from "react";
 
-import {LoginScreen} from "../components/screens/LoginScreen";
-import {RegisterScreen} from "../components/screens/RegisterScreen";
+import { LoginScreen } from "../screens/LoginScreen";
+import { RegisterScreen } from "../screens/RegisterScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const AuthFlow = () => {

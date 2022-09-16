@@ -1,10 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { appStyles, colors } from "../../../config";
-import { CpSpacer } from "../common/CpSpacer";
-import { CpTextInput } from "../common/CpTextInput";
-import { CpButton } from "../common/CpButton";
-import { CpLink } from "../common/CpLink";
-import { useState } from "react";
+import { appStyles, colors } from "../../config";
+import { CpSpacer } from "../components/common/CpSpacer";
+import { CpTextInput } from "../components/common/CpTextInput";
+import { CpButton } from "../components/common/CpButton";
+import { CpLink } from "../components/common/CpLink";
+import { useEffect, useState } from "react";
+import { register } from "../utilities/userApi";
 
 export const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");

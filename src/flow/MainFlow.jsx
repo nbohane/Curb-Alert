@@ -1,6 +1,6 @@
 import React from "react";
 
-import {HomeScreen} from "../components/screens/HomeScreen";
+import { HomeScreen } from "../screens/HomeScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Text } from "react-native";
 // import AccountScreen from "../components/screens/AccountScreen";
