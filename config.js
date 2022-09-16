@@ -20,4 +20,5 @@ export const appStyles = {
   elementSpacing: 8,
   largeText: 16,
 };
-export const apiUrl = "http://10.0.0.60:3000";
+export const apiUrl =
+  "http://curbalert-env.eba-xnjnftzq.us-east-1.elasticbeanstalk.com";

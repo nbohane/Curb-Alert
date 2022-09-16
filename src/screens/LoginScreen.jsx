@@ -7,17 +7,25 @@ import { CpPasswordInput } from "../components/common/CpPasswordInput";
 import { CpButton } from "../components/common/CpButton";
 import { CpSpacer } from "../components/common/CpSpacer";
 import { login } from "../utilities/userApi";
+import { createListing } from "../utilities/listingApi";
+import { useDispatch } from "react-redux";
+import { logIn, logOut } from "../redux/authSlice";
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    //TODO this is working, but it shouldn't be in an effect hook
+  const dispatch = useDispatch();
+
+  const attemptLogin = () => {
+    //TODO this is working, but it needs more, like validation and handling errors
     login("jay@baffoni5.com", "password")
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        dispatch(logIn(response.data));
+      })
       .catch((error) => console.error(error));
-  }, []);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,7 +37,11 @@ export const LoginScreen = ({ navigation }) => {
           value={email}
         />
         <CpPasswordInput onChangeText={(text) => setPassword(text)} />
-        <CpButton text={"Login"} backgroundColor={colors.secondary} />
+        <CpButton
+          text={"Login"}
+          backgroundColor={colors.secondary}
+          onPress={attemptLogin}
+        />
         <View style={styles.register}>
           <Text style={{ color: colors.light }}>
             Don't have an account? Register{" "}
