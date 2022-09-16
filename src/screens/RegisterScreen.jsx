@@ -6,6 +6,8 @@ import { CpButton } from "../components/common/CpButton";
 import { CpLink } from "../components/common/CpLink";
 import { useEffect, useState } from "react";
 import { register } from "../utilities/userApi";
+import { setAlert } from "../redux/utilitySlice";
+import { useDispatch } from "react-redux";
 
 export const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -14,6 +16,49 @@ export const RegisterScreen = ({ navigation }) => {
   const [zipcode, setZipcode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const attemptRegister = () => {
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === "" ||
+      address === "" ||
+      zipcode === ""
+    ) {
+      dispatch(
+        setAlert({ level: "error", message: "All fields are required" })
+      );
+      return;
+    }
+    if (password !== confirmPassword) {
+      dispatch(
+        setAlert({
+          level: "error",
+          message: "Password does not match confirm password",
+        })
+      );
+      return;
+    }
+    register(name, email, password, zipcode, address)
+      .then((response) => {
+        dispatch(
+          setAlert({
+            level: "success",
+            message: "Registration successful! Please log in",
+          })
+        );
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        dispatch(
+          setAlert({ level: "error", message: error.response.data.message })
+        );
+        console.log(error.response.data.message);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,7 +74,7 @@ export const RegisterScreen = ({ navigation }) => {
         />
         <CpTextInput
           placeholder={"address"}
-          onChangeText={(text) => setAdress(text)}
+          onChangeText={(text) => setAddress(text)}
           secureTextEntry
         />
         <CpTextInput
@@ -47,7 +92,11 @@ export const RegisterScreen = ({ navigation }) => {
           onChangeText={(text) => setConfirmPassword(text)}
           secureTextEntry
         />
-        <CpButton text={"Register"} backgroundColor={colors.secondary} />
+        <CpButton
+          text={"Register"}
+          onPress={attemptRegister}
+          backgroundColor={colors.secondary}
+        />
       </View>
       <View style={styles.loginContainer}>
         <Text style={{ color: colors.light }}>

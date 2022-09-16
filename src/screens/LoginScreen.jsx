@@ -8,23 +8,36 @@ import { CpButton } from "../components/common/CpButton";
 import { CpSpacer } from "../components/common/CpSpacer";
 import { login } from "../utilities/userApi";
 import { createListing } from "../utilities/listingApi";
-import { useDispatch } from "react-redux";
-import { logIn, logOut } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, logOut, selectUser } from "../redux/authSlice";
+import { setAlert, setLoading } from "../redux/utilitySlice";
 
 export const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const user = useSelector((state) => selectUser(state));
 
+  const [email, setEmail] = useState(user.email);
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
   const attemptLogin = () => {
-    //TODO this is working, but it needs more, like validation and handling errors
-    login("jay@baffoni5.com", "password")
-      .then((response) => {
-        console.log(response.data);
-        dispatch(logIn(response.data));
+    if (email === "" || password === "") {
+      dispatch(
+        setAlert({ level: "error", message: "All fields are required" })
+      );
+      return;
+    }
+    dispatch(setLoading(true));
+    login(email, password)
+      .then((response) => dispatch(logIn(response.data)))
+      .catch((error) => {
+        dispatch(
+          setAlert({ level: "error", message: error.response.data.message })
+        );
+        console.log(error.response.data.message);
       })
-      .catch((error) => console.error(error));
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   };
 
   return (

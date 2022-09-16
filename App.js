@@ -9,8 +9,6 @@ import { RegisterScreen } from "./src/screens/RegisterScreen";
 import Navigation from "./src/flow/Navigation";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
-
   return (
     <View style={styles.container}>
       <Provider store={store}>

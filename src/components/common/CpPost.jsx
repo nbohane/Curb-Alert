@@ -21,16 +21,27 @@ export const CpPost = ({ post, onEdit, onDelete }) => {
           </Text>
         </View>
       </View>
-      <Text
-        style={{
-          paddingVertical: 4,
-          fontSize: appStyles.primaryTextSize,
-          color: colors.dark,
-        }}
-      >
-        {post.message}
-      </Text>
-      {post.author === user.id && (
+      <View style={{ flexDirection: "column" }}>
+        <Text
+          style={{
+            paddingVertical: 4,
+            fontSize: appStyles.primaryTextSize,
+            color: colors.dark,
+          }}
+        >
+          {post.title}
+        </Text>
+        <Text
+          style={{
+            paddingVertical: 4,
+            fontSize: appStyles.primaryTextSize,
+            color: colors.dark,
+          }}
+        >
+          {post.description}
+        </Text>
+      </View>
+      {post.name === user.id && (
         <View style={{ flexDirection: "row" }}>
           <CpLink color={colors.primary} text={"Edit"} onPress={onEdit} />
           <View style={{ width: 16 }} />

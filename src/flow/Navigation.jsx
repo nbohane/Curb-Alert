@@ -7,7 +7,7 @@ import AuthFlow from "./AuthFlow";
 import MainFlow from "./MainFlow";
 import CpAlert from "../components/common/CpAlert";
 import CpLoadingIndicator from "../components/common/CpLoadingIndicator";
-import {selectLoggedIn} from "../redux/authSlice";
+import { selectLoggedIn } from "../redux/authSlice";
 
 const Navigation = () => {
   const loggedIn = useSelector((state) => selectLoggedIn(state));
