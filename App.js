@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { RegisterScreen } from "./src/screens/RegisterScreen";
 import Navigation from "./src/flow/Navigation";
+import {HomeScreen} from "./src/screens/HomeScreen";
 
 export default function App() {
   return (
