@@ -42,7 +42,7 @@ export const RegisterScreen = ({ navigation }) => {
       );
       return;
     }
-    register(name, email, password, zipcode, address)
+    register(name, email, password, address, zipcode)
       .then((response) => {
         dispatch(
           setAlert({
@@ -75,12 +75,10 @@ export const RegisterScreen = ({ navigation }) => {
         <CpTextInput
           placeholder={"address"}
           onChangeText={(text) => setAddress(text)}
-          secureTextEntry
         />
         <CpTextInput
           placeholder={"zipcode"}
           onChangeText={(text) => setZipcode(text)}
-          secureTextEntry
         />
         <CpTextInput
           placeholder={"password"}
@@ -94,7 +92,9 @@ export const RegisterScreen = ({ navigation }) => {
         />
         <CpButton
           text={"Register"}
-          onPress={attemptRegister}
+          onPress={() => {
+            attemptRegister();
+          }}
           backgroundColor={colors.secondary}
         />
       </View>
@@ -119,3 +119,4 @@ const styles = StyleSheet.create({
   },
   loginContainer: { flexDirection: "row", alignSelf: "center" },
 });
+

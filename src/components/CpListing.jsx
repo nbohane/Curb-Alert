@@ -1,25 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
-import { appStyles, colors } from "../../../config";
+import { appStyles, colors } from "../../config";
 import moment from "moment";
-import { CpLink } from "./CpLink";
+import { CpLink } from "./common/CpLink";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/authSlice";
+import { selectUser } from "../redux/authSlice";
+import React from "react";
 
-export const CpPost = ({ post, onEdit, onDelete }) => {
+export const CpListing = ({ listing, onEdit, onDelete }) => {
   const user = useSelector((state) => selectUser(state));
-  let currentTime = new Date(post.timestamp);
+  let currentTime = new Date(listing.timestamp);
   let timestamp = moment(currentTime).fromNow();
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.author}>{post.name}</Text>
+        <Text style={styles.author}>{user.name}</Text>
         <View>
           <Text style={styles.timestamp}>
             {timestamp}
-            {post.edited === 1 && " (edited)"}
+            {listing.edited === 1 && " (edited)"}
           </Text>
         </View>
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <Text style={styles.location}>{listing.address} -</Text>
+        <Text style={styles.location}> {listing.zip}</Text>
       </View>
       <View style={{ flexDirection: "column" }}>
         <Text
@@ -27,9 +32,10 @@ export const CpPost = ({ post, onEdit, onDelete }) => {
             paddingVertical: 4,
             fontSize: appStyles.primaryTextSize,
             color: colors.dark,
+            fontWeight: "500",
           }}
         >
-          {post.title}
+          {listing.title}
         </Text>
         <Text
           style={{
@@ -38,10 +44,10 @@ export const CpPost = ({ post, onEdit, onDelete }) => {
             color: colors.dark,
           }}
         >
-          {post.description}
+          {listing.description}
         </Text>
       </View>
-      {post.name === user.id && (
+      {listing.author === user.id && (
         <View style={{ flexDirection: "row" }}>
           <CpLink color={colors.primary} text={"Edit"} onPress={onEdit} />
           <View style={{ width: 16 }} />
@@ -64,6 +70,10 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
+  },
+  location: {
+    fontSize: appStyles.smallTextSize,
+    color: colors.secondary,
   },
   author: {
     flex: 1,

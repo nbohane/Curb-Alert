@@ -15,6 +15,7 @@ export const register = async (name, email, password, address, zipcode) => {
     default_address: address,
     default_zip: zipcode,
   };
+  console.log(data);
   return await axios.post(url, data);
 };
 

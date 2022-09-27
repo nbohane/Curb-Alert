@@ -3,21 +3,28 @@ import {
   Animated,
   Dimensions,
   FlatList,
+  RefreshControl,
   SafeAreaView,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectUser } from "../redux/authSlice";
-import { createListing, deleteListing, getFeed } from "../utilities/listingApi";
+import {
+  createListing,
+  deleteListing,
+  getFeed,
+  updateListing,
+} from "../utilities/listingApi";
 import { setAlert, setLoading } from "../redux/utilitySlice";
 import { appStyles, colors } from "../../config";
 import { useNavigation } from "@react-navigation/native";
 import { CpDialog } from "../components/common/CpDialog";
-import { CpPost } from "../components/common/CpPost";
+import { CpListing } from "../components/CpListing";
 import { CpFloatingButton } from "../components/common/CpFloatingButton";
 import { CpTextInput } from "../components/common/CpTextInput";
 import { UserCircleIcon } from "react-native-heroicons/solid";
+import { CpButton } from "../components/common/CpButton";
 
 export const HomeScreen = () => {
   const user = useSelector((state) => selectUser(state));
@@ -25,36 +32,61 @@ export const HomeScreen = () => {
   const [listings, setListings] = useState([]);
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState(user.default_address);
+  const [zipcode, setZipcode] = useState(user.default_zip);
   const [editing, setEditing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = useState(null);
   const dispatch = useDispatch();
 
-  const newPost = () => {
-    if (!message) return;
-    createListing({
-      name: user.id,
-      title: title,
-      description: description,
-      address: address,
-      zipcode: zipcode,
-    })
-      .then((response) => {
-        getPostsInFeed();
-        setTitle("");
-      })
-      .catch((err) => {
-        dispatch(setAlert(err.response.data.message));
-      });
+  const openEditingWindow = (listing) => {
+    setEditing(true);
+    setTitle(listing.title);
+    setDescription(listing.description);
+    setAddress(listing.address);
+    setZipcode(listing.zip);
   };
 
-  const deletePostFromFeed = () => {
+  const saveListing = () => {
+    if (!title) return;
+
+    if (selected) {
+      updateListing(selected.id, {
+        title: title,
+        description: description,
+        address: address,
+        zip: zipcode,
+      })
+        .then((response) => {
+          getListingsInFeed();
+          setEditing(false);
+        })
+        .catch((error) => {
+          dispatch(setAlert("error", error.response.data.message));
+        });
+    } else {
+      createListing({
+        author: user.id,
+        title: title,
+        description: description,
+        address: address,
+        zip: zipcode,
+      })
+        .then((response) => {
+          getListingsInFeed();
+          setEditing(false);
+        })
+        .catch((err) => {
+          dispatch(setAlert(err.response.data.message));
+        });
+    }
+  };
+
+  const deleteListingFromFeed = () => {
     if (!selected) return;
     deleteListing(selected.id)
       .then((response) => {
-        getPostsInFeed();
+        getListingsInFeed();
       })
       .catch((err) => {
         dispatch(setAlert(err.response.data.message));
@@ -86,9 +118,9 @@ export const HomeScreen = () => {
     });
   }, []);
 
-  const getPostsInFeed = () => {
+  const getListingsInFeed = () => {
     dispatch(setLoading(true));
-    getFeed(user.id, 1)
+    getFeed(user.default_zip, 1)
       .then((response) => {
         setListings(response.data.data);
       })
@@ -99,11 +131,18 @@ export const HomeScreen = () => {
   };
 
   useEffect(() => {
-    getPostsInFeed();
+    getListingsInFeed();
   }, []);
 
   useEffect(() => {
     slide(editing);
+    if (!editing) {
+      setTitle("");
+      setDescription("");
+      setAddress(user.default_address);
+      setZipcode(user.default_zip);
+      setSelected(null);
+    }
   }, [editing]);
 
   const slideAnimation = useRef(new Animated.Value(0)).current;
@@ -111,7 +150,7 @@ export const HomeScreen = () => {
   const slide = (showing) => {
     showing.current = showing;
     Animated.timing(slideAnimation, {
-      toValue: editing ? -316 : 0,
+      toValue: editing ? -387 : 0,
       duration: 300,
       useNativeDriver: true,
     }).start();
@@ -126,7 +165,7 @@ export const HomeScreen = () => {
         confirmLabel={"Delete"}
         confirm={() => {
           setModalVisible(false);
-          deletePostFromFeed();
+          deleteListingFromFeed();
         }}
       />
       <FlatList
@@ -136,11 +175,16 @@ export const HomeScreen = () => {
           paddingBottom: 96,
         }}
         data={listings}
-        onRefresh={getFeed}
-        refreshing={false}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={getListingsInFeed} />
+        }
         renderItem={({ item }) => (
-          <CpPost
-            post={item}
+          <CpListing
+            listing={item}
+            onEdit={() => {
+              setSelected(item);
+              openEditingWindow(item);
+            }}
             onDelete={() => {
               setSelected(item);
               setModalVisible(true);
@@ -160,7 +204,7 @@ export const HomeScreen = () => {
           position: "absolute",
           right: 0,
           left: 0,
-          bottom: -316,
+          bottom: -387,
           transform: [
             {
               translateY: slideAnimation,
@@ -212,6 +256,7 @@ export const HomeScreen = () => {
             onChangeText={(text) => setZipcode(text)}
             value={zipcode}
           />
+          <CpButton text={"Save Listing"} onPress={saveListing} />
         </View>
       </Animated.View>
     </SafeAreaView>

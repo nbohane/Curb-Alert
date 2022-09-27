@@ -8,6 +8,7 @@ export const getFeed = async (zip, page = 1) => {
 };
 
 export const createListing = async (listing) => {
+  console.log(listing);
   return axios.post(url, listing);
 };
 

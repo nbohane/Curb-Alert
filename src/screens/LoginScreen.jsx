@@ -7,7 +7,6 @@ import { CpPasswordInput } from "../components/common/CpPasswordInput";
 import { CpButton } from "../components/common/CpButton";
 import { CpSpacer } from "../components/common/CpSpacer";
 import { login } from "../utilities/userApi";
-import { createListing } from "../utilities/listingApi";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn, logOut, selectUser } from "../redux/authSlice";
 import { setAlert, setLoading } from "../redux/utilitySlice";
